@@ -26,6 +26,15 @@ public class PlayerScript : MonoBehaviour
 
     private int flickerAmount = 4;
     private float flickerDuration = 0.1f;
+
+    public bool arrowHitsBall = false;
+    public bool playerHitByBall = false;
+
+    public PlayerHealth playerHealth;
+    public LevelSystem levelSystem;
+
+    public int amountOfDamage;
+    public int amountOfExp;
     
     // Start is called before the first frame update
     void Awake()
@@ -38,6 +47,18 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
         Shoot();
+
+        if (arrowHitsBall)
+        {
+            ArrowHitBall();
+            arrowHitsBall = false;
+        }
+
+        if (playerHitByBall)
+        {
+            PlayerGotHit();
+            playerHitByBall = false;
+        }
     }
 
     private void FixedUpdate()
@@ -166,5 +187,16 @@ public class PlayerScript : MonoBehaviour
             yield return new WaitForSeconds(flickerDuration);
             canTakeDamage = true;
         }
+    }
+
+    private void ArrowHitBall()
+    {
+        levelSystem.GainExperienceScalable(amountOfExp, levelSystem.level);
+    }
+
+    private void PlayerGotHit()
+    {
+        playerHealth.TakeDamage(amountOfDamage);
+        GotDamaged();
     }
 }

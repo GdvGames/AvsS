@@ -40,8 +40,8 @@ public class LevelSystem : MonoBehaviour
     {
         UpdateXpUI();
 
-        if (Input.GetKeyUp(KeyCode.Equals))
-            GainExperienceFlatRate(20);
+        if (Input.GetKeyUp(KeyCode.Q))
+            GainExperienceScalable(20, level);
 
         if (currentXp > requiredXp)
             LevelUp();

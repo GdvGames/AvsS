@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 6302439714095141592}
   - component: {fileID: 6302439714095141599}
   - component: {fileID: 1403876797}
+  - component: {fileID: 1861187640}
+  - component: {fileID: 1861187647}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -148,9 +150,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.5
-  m_LinearDrag: 5
+  m_LinearDrag: 50
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 50
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -170,3 +172,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrow: {fileID: 543150253550001876, guid: f534364c5236a6145a3c1ed01fb71c93, type: 3}
   shootSound: {fileID: 8300000, guid: 7f1ff5634ddb43b40b3d0d45d3e6fbbb, type: 3}
+  speed: 150
+  canTakeDamage: 1
+  arrowHitsBall: 0
+  playerHitByBall: 0
+  playerHealth: {fileID: 1861187640}
+  levelSystem: {fileID: 1861187647}
+--- !u!114 &1861187640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6302439714095141588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf9a0d44179c2eb4084ee2bab2f81220, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
+  maxHealth: 100
+  chipSpeed: 2
+  frontHealthBar: {fileID: 0}
+  backHealthBar: {fileID: 0}
+  healthText: {fileID: 0}
+  player: {fileID: 1403876797}
+--- !u!114 &1861187647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6302439714095141588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d014c9a44d135dd45b06819e36aa90b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  level: 1
+  currentXp: 0
+  requiredXp: 130
+  frontXpBar: {fileID: 0}
+  backXpBar: {fileID: 0}
+  levelText: {fileID: 0}
+  xpText: {fileID: 0}
+  additionMultiplier: 300
+  powerMultiplier: 2
+  divisionMultiplier: 7

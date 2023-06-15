@@ -25,11 +25,16 @@ public class BallScript : MonoBehaviour
 
     [SerializeField]
     private float speed;
+    private int damage;
+    private int exp;
+
+    public PlayerScript playerScript;
 
     // Start is called before the first frame update
     void Awake()
     {
         myBody = GetComponent<Rigidbody2D>();
+        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
         SetBallSpeed();
     }
 
@@ -113,22 +118,32 @@ public class BallScript : MonoBehaviour
         {
             case "Largest Ball":
                 forceY = 5f;
+                damage = 20;
+                exp = 5;
                 break;
 
             case "Large Ball":
                 forceY = 4.5f;
+                damage = 15;
+                exp = 10;
                 break;
 
             case "Medium Ball":
                 forceY = 4f;
+                damage = 10;
+                exp = 15;
                 break;
 
             case "Small Ball":
                 forceY = 3f;
+                damage = 5;
+                exp = 18;
                 break;
 
             case "Smallest Ball":
                 forceY = 2.5f;
+                damage = 3;
+                exp = 20;
                 break;
         }
     }
@@ -151,6 +166,9 @@ public class BallScript : MonoBehaviour
                 Vector2 new_dir = Vector2.Reflect(myBody.velocity, fNormal).normalized;
 
                 myBody.velocity = new_dir * speed;
+
+                playerScript.playerHitByBall = true;
+                playerScript.amountOfDamage = damage;
             }
 
             if (collision.gameObject.CompareTag("Arrow"))
@@ -164,6 +182,8 @@ public class BallScript : MonoBehaviour
                     AudioSource.PlayClipAtPoint(popSounds[Random.Range(0, popSounds.Length)], transform.position);
                     gameObject.SetActive(false);
                 }
+                playerScript.arrowHitsBall = true;
+                playerScript.amountOfExp = exp;
             }
         }
     }

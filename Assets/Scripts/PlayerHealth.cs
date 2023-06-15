@@ -74,7 +74,7 @@ public class PlayerHealth : MonoBehaviour
         {
             health -= damage;
             lerpTimer = 0;
-            player.GotDamaged();
+            //player.GotDamaged();
         }
         
     }

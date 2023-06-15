@@ -145,3 +145,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 56b9f4a79ea698e428474bae078a6bc9, type: 3}
   - {fileID: 8300000, guid: 097ff221692880243bf2861bbb4746f2, type: 3}
   maxSpeed: 20
+  speed: 0
+  playerScript: {fileID: 0}
