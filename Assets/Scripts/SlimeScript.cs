@@ -6,117 +6,167 @@ using UnityEngine;
 public class SlimeScript : MonoBehaviour
 {
 
-    public Rigidbody2D mainRigidbody;
+    private Rigidbody2D rigidBody;
+    private float speed = 400f;
+    Vector3 lastVelocity;
 
-    public CircleCollider2D circleCollider;
+    private float forceX, forceY;
+    private PlayerScript playerScript;
 
-    private float dirForce;
-
-    private int tempDir;
+    private int damage;
+    private int exp;
+    private Vector3 popDistance;
 
     [SerializeField]
-    private GameObject originalBall;
+    private bool moveLeft, moveRight;
 
-    private GameObject ball1, ball2;
-    private SlimeScript ball1Script, ball2Script;
+    [SerializeField]
+    private GameObject originalSlime;
+
+    private GameObject slime1, slime2;
+    private SlimeScript slime1Script, slime2Script;
 
     [SerializeField]
     private AudioClip[] popSounds;
 
     private void Awake()
     {
-        SetSlimeForce();
+        rigidBody = GetComponent<Rigidbody2D>();
+        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
+        SetSlimes();
     }
 
     private void Start()
     {
-       RandomizeStartDirection();
+        MoveSlimes();
+    }
+
+    private void Update()
+    {
+        lastVelocity = rigidBody.velocity;
     }
 
     void InstantiateSlimes()
     {
-        ball1 = Instantiate(originalBall);
-        ball2 = Instantiate(originalBall);
+        slime1 = Instantiate(originalSlime);
+        slime2 = Instantiate(originalSlime);
 
-        ball1Script = ball1.GetComponent<SlimeScript>();
-        ball2Script = ball2.GetComponent<SlimeScript>();
+        slime1.name = originalSlime.name;
+        slime2.name = originalSlime.name;
+
+        slime1Script = slime1.GetComponent<SlimeScript>();
+        slime2Script = slime2.GetComponent<SlimeScript>();
     }
 
-    void SetSlimeForce()
+    void InitializeSlimeAndTurnOffCurrent()
     {
-        dirForce = 15f;
+        InstantiateSlimes();
+
+        Vector3 temp = transform.position;
+
+        slime1.transform.position = temp - popDistance;
+        slime1Script.SetMoveLeft(true);
+
+        slime2.transform.position = temp + popDistance;
+        slime2Script.SetMoveRight(true);
+
+        AudioSource.PlayClipAtPoint(popSounds[Random.Range(0, popSounds.Length)], transform.position);
+        gameObject.SetActive(false);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        var speed = lastVelocity.magnitude;
+        var direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
+        rigidBody.velocity = direction * Mathf.Max(speed, 0f);
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            playerScript.playerHitByBall = true;
+            playerScript.amountOfDamage = damage;
+        }
+
+        if (collision.gameObject.CompareTag("Arrow"))
+        {
+            if (!gameObject.CompareTag("Smallest Ball"))
+            {
+                InitializeSlimeAndTurnOffCurrent();
+            }
+            else
+            {
+                AudioSource.PlayClipAtPoint(popSounds[Random.Range(0, popSounds.Length)], transform.position);
+                gameObject.SetActive(false);
+            }
+            playerScript.arrowHitsBall = true;
+            playerScript.amountOfExp = exp;
+        }
+    }
+
+    void SetSlimes()
+    {
+        forceX = 20f;
 
         switch (this.gameObject.tag)
         {
             case "Largest Ball":
-                dirForce = 57f;
+                forceY = 20f;
+                damage = 20;
+                exp = 5;
+                popDistance = new Vector3(.6f, 0);
                 break;
 
             case "Large Ball":
-                dirForce = 46f;
+                forceY = 15f;
+                damage = 15;
+                exp = 10;
+                popDistance = new Vector3(.45f, 0);
                 break;
 
             case "Medium Ball":
-                dirForce = 35f;
+                forceY = 10f;
+                damage = 10;
+                exp = 15;
+                popDistance = new Vector3(.3f, 0);
                 break;
 
             case "Small Ball":
-                dirForce = 24f;
+                forceY = 5f;
+                damage = 5;
+                exp = 18;
+                popDistance = new Vector3(.2f, 0);
                 break;
 
             case "Smallest Ball":
-                dirForce = 16f;
+                forceY = 3f;
+                damage = 3;
+                exp = 20;
+                popDistance = new Vector3(.1f, 0);
                 break;
         }
     }
 
-    public void InitializeSlimes()
+    public void SetMoveLeft(bool canMoveLeft)
     {
-        if (this.gameObject.tag != "Smallest Ball")
-        {
-            InstantiateSlimes();
-
-            Vector3 temp = transform.position;
-
-            ball1.transform.position = temp;
-            ball1Script.mainRigidbody.AddForce(Vector2.left * dirForce, ForceMode2D.Impulse);
-
-            ball2.transform.position = temp;
-            ball2Script.mainRigidbody.AddForce(Vector2.right * dirForce, ForceMode2D.Impulse);
-
-            PopDaSlime();
-        }
-        else
-        {
-            PopDaSlime();
-        }
-
-        
+        this.moveLeft = canMoveLeft;
+        this.moveRight = !canMoveLeft;
     }
 
-    public void RandomizeStartDirection()
+    public void SetMoveRight(bool canMoveRight)
     {
-        if(this.gameObject.tag == "Largest Ball")
-        {
-            tempDir = Random.Range(0, 2);
-
-
-            if (tempDir == 0)
-            {
-                mainRigidbody.AddForce(Vector2.left * dirForce, ForceMode2D.Impulse);
-            }
-            else if (tempDir == 1)
-            {
-                mainRigidbody.AddForce(Vector2.right * dirForce, ForceMode2D.Impulse);
-            }
-
-            Debug.Log("La direzione è: " + tempDir);
-        }
+        this.moveRight = canMoveRight;
+        this.moveLeft = !canMoveRight;
     }
 
-    public void PopDaSlime()
+    void MoveSlimes()
     {
-        AudioSource.PlayClipAtPoint(popSounds[Random.Range(0, popSounds.Length)], transform.position);
-        gameObject.SetActive(false);
+        if (moveRight)
+        {
+            rigidBody.AddForce(new Vector2(forceX * Time.deltaTime * speed, forceY * Time.deltaTime * speed));
+        }
+
+        if (moveLeft)
+        {
+            rigidBody.AddForce(new Vector2(-forceX * Time.deltaTime * speed, forceY * Time.deltaTime * speed));
+        }
     }
 }

@@ -164,7 +164,7 @@ public class PlayerScript : MonoBehaviour
 
         if(name.Length > 1)
         {
-            if(name[1] == "Ball")
+            if(name[1] == "Slime")
             {
                 //StartCoroutine(KillThePlayer());
             }

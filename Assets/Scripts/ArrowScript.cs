@@ -49,7 +49,7 @@ public class ArrowScript : MonoBehaviour
 
         if (name.Length > 1)
         {
-            if (name[1] == "Ball")
+            if (name[1] == "Slime")
             {
                 Destroy(gameObject);
             }
