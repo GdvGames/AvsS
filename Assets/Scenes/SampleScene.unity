@@ -1627,6 +1627,10 @@ PrefabInstance:
       value: Largest Slime
       objectReference: {fileID: 0}
     - target: {fileID: 2706744309856125342, guid: 4a430b9ecb9911a4ba2a60dd87bfef19, type: 3}
+      propertyPath: minion
+      value: 
+      objectReference: {fileID: 11400000, guid: 2b3594f4542671544b6854a01490d239, type: 2}
+    - target: {fileID: 2706744309856125342, guid: 4a430b9ecb9911a4ba2a60dd87bfef19, type: 3}
       propertyPath: moveRight
       value: 1
       objectReference: {fileID: 0}

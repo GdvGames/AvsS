@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class SlimeScript : MonoBehaviour
 {
+    public Minion minion;
 
     private Rigidbody2D rigidBody;
     private float speed = 400f;
@@ -13,8 +14,14 @@ public class SlimeScript : MonoBehaviour
     private float forceX, forceY;
     private PlayerScript playerScript;
 
+    private string slimeName;
     private int damage;
     private int exp;
+    private int points;
+    private int slimeHealth;
+
+    private Color slimeColor;
+
     private Vector3 popDistance;
 
     [SerializeField]
@@ -55,7 +62,12 @@ public class SlimeScript : MonoBehaviour
         slime2.name = originalSlime.name;
 
         slime1Script = slime1.GetComponent<SlimeScript>();
+        slime1Script.minion = minion;
+        slime1Script.SetSlimes();
+
         slime2Script = slime2.GetComponent<SlimeScript>();
+        slime2Script.minion = minion;
+        slime2Script.SetSlimes();
     }
 
     void InitializeSlimeAndTurnOffCurrent()
@@ -66,9 +78,11 @@ public class SlimeScript : MonoBehaviour
 
         slime1.transform.position = temp - popDistance;
         slime1Script.SetMoveLeft(true);
+        
 
         slime2.transform.position = temp + popDistance;
         slime2Script.SetMoveRight(true);
+        
 
         AudioSource.PlayClipAtPoint(popSounds[Random.Range(0, popSounds.Length)], transform.position);
         gameObject.SetActive(false);
@@ -110,36 +124,88 @@ public class SlimeScript : MonoBehaviour
         {
             case "Largest Ball":
                 forceY = 20f;
-                damage = 20;
-                exp = 5;
+                if(minion != null)
+                {
+
+                }
+                slimeName = "Largest " + minion.minionName;
+                slimeHealth = minion.health;
+                damage = minion.minionDamage;
+                exp = minion.givenExp;
+                points = minion.givenPoints;
+
+                slimeColor = minion.minionColor;
+                this.GetComponent<SpriteRenderer>().color = slimeColor;
+                this.GetComponent<SpriteRenderer>().sprite = minion.demonSprite;
+
                 popDistance = new Vector3(.6f, 0);
                 break;
 
             case "Large Ball":
                 forceY = 15f;
-                damage = 15;
-                exp = 10;
+                if (minion != null)
+                {
+                    slimeName = "Large " + minion.minionName;
+                    slimeHealth = Mathf.RoundToInt(minion.health - ((minion.health * 10) / 100));
+                    damage = Mathf.RoundToInt(minion.minionDamage - ((minion.minionDamage * 10) / 100));
+                    exp = Mathf.RoundToInt(minion.givenExp + ((minion.givenExp * 10) / 100)); ;
+                    points = Mathf.RoundToInt(minion.givenPoints + ((minion.givenPoints * 10) / 100)); ;
+
+                    slimeColor = minion.minionColor;
+                    this.GetComponent<SpriteRenderer>().color = slimeColor;
+                    this.GetComponent<SpriteRenderer>().sprite = minion.demonSprite;
+                }
                 popDistance = new Vector3(.45f, 0);
                 break;
 
             case "Medium Ball":
                 forceY = 10f;
-                damage = 10;
-                exp = 15;
+                if (minion != null)
+                {
+                    slimeName = "Medium " + minion.minionName;
+                    slimeHealth = Mathf.RoundToInt(minion.health - ((minion.health * 20) / 100));
+                    damage = Mathf.RoundToInt(minion.minionDamage - ((minion.minionDamage * 20) / 100));
+                    exp = Mathf.RoundToInt(minion.givenExp + ((minion.givenExp * 20) / 100)); ;
+                    points = Mathf.RoundToInt(minion.givenPoints + ((minion.givenPoints * 20) / 100)); ;
+
+                    slimeColor = minion.minionColor;
+                    this.GetComponent<SpriteRenderer>().color = slimeColor;
+                    this.GetComponent<SpriteRenderer>().sprite = minion.demonSprite;
+                }
                 popDistance = new Vector3(.3f, 0);
                 break;
 
             case "Small Ball":
                 forceY = 5f;
-                damage = 5;
-                exp = 18;
+                if (minion != null)
+                {
+                    slimeName = "Small " + minion.minionName;
+                    slimeHealth = Mathf.RoundToInt(minion.health - ((minion.health * 30) / 100));
+                    damage = Mathf.RoundToInt(minion.minionDamage - ((minion.minionDamage * 30) / 100));
+                    exp = Mathf.RoundToInt(minion.givenExp + ((minion.givenExp * 30) / 100)); ;
+                    points = Mathf.RoundToInt(minion.givenPoints + ((minion.givenPoints * 30) / 100)); ;
+
+                    slimeColor = minion.minionColor;
+                    this.GetComponent<SpriteRenderer>().color = slimeColor;
+                    this.GetComponent<SpriteRenderer>().sprite = minion.demonSprite;
+                }
                 popDistance = new Vector3(.2f, 0);
                 break;
 
             case "Smallest Ball":
                 forceY = 3f;
-                damage = 3;
-                exp = 20;
+                if (minion != null)
+                {
+                    slimeName = "Smallest " + minion.minionName;
+                    slimeHealth = Mathf.RoundToInt(minion.health - ((minion.health * 40) / 100));
+                    damage = Mathf.RoundToInt(minion.minionDamage - ((minion.minionDamage * 40) / 100));
+                    exp = Mathf.RoundToInt(minion.givenExp + ((minion.givenExp * 40) / 100)); ;
+                    points = Mathf.RoundToInt(minion.givenPoints + ((minion.givenPoints * 40) / 100)); ;
+
+                    slimeColor = minion.minionColor;
+                    this.GetComponent<SpriteRenderer>().color = slimeColor;
+                    this.GetComponent<SpriteRenderer>().sprite = minion.demonSprite;
+                }
                 popDistance = new Vector3(.1f, 0);
                 break;
         }

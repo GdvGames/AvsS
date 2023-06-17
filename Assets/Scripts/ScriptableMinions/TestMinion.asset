@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2049a5bb3527fcd44a4684df5b1b0b85, type: 3}
+  m_Name: TestMinion
+  m_EditorClassIdentifier: 
+  minionName: TestMinion
+  description: that focus on tryin to use SO
+  health: 100
+  givenExp: 5
+  givenPoints: 50
+  minionDamage: 10
+  demonSprite: {fileID: 21300000, guid: 63ab2236cc3dff74b8e7b35764bd5c00, type: 3}
+  popFX: {fileID: 0}
+  bounceFX: {fileID: 0}
+  minionColor: {r: 1, g: 0.8798679, b: 0, a: 1}
+  minionDrop: []
