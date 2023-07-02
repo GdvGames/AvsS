@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class SlimeScript : MonoBehaviour
 {
@@ -50,6 +52,11 @@ public class SlimeScript : MonoBehaviour
 
     private void Update()
     {
+        
+    }
+
+    private void FixedUpdate()
+    {
         lastVelocity = rigidBody.velocity;
     }
 
@@ -85,15 +92,16 @@ public class SlimeScript : MonoBehaviour
         
 
         AudioSource.PlayClipAtPoint(popSounds[Random.Range(0, popSounds.Length)], transform.position);
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         var speed = lastVelocity.magnitude;
         var direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
-        rigidBody.velocity = direction * Mathf.Max(speed, 0f);
-
+        rigidBody.velocity = direction * Mathf.Max(speed, 0.2f);
+        
         if (collision.gameObject.CompareTag("Player"))
         {
             playerScript.playerHitByBall = true;
@@ -109,7 +117,8 @@ public class SlimeScript : MonoBehaviour
             else
             {
                 AudioSource.PlayClipAtPoint(popSounds[Random.Range(0, popSounds.Length)], transform.position);
-                gameObject.SetActive(false);
+                //gameObject.SetActive(false);
+                Destroy(gameObject);
             }
             playerScript.arrowHitsBall = true;
             playerScript.amountOfExp = exp;
@@ -119,6 +128,7 @@ public class SlimeScript : MonoBehaviour
     void SetSlimes()
     {
         forceX = 20f;
+        popDistance = new Vector3(0f, 0f);
 
         switch (this.gameObject.tag)
         {
@@ -138,7 +148,7 @@ public class SlimeScript : MonoBehaviour
                 this.GetComponent<SpriteRenderer>().color = slimeColor;
                 this.GetComponent<SpriteRenderer>().sprite = minion.demonSprite;
 
-                popDistance = new Vector3(.6f, 0);
+                //popDistance = new Vector3(.6f, 0);
                 break;
 
             case "Large Ball":
@@ -155,7 +165,7 @@ public class SlimeScript : MonoBehaviour
                     this.GetComponent<SpriteRenderer>().color = slimeColor;
                     this.GetComponent<SpriteRenderer>().sprite = minion.demonSprite;
                 }
-                popDistance = new Vector3(.45f, 0);
+                //popDistance = new Vector3(.45f, 0);
                 break;
 
             case "Medium Ball":
@@ -172,7 +182,7 @@ public class SlimeScript : MonoBehaviour
                     this.GetComponent<SpriteRenderer>().color = slimeColor;
                     this.GetComponent<SpriteRenderer>().sprite = minion.demonSprite;
                 }
-                popDistance = new Vector3(.3f, 0);
+                //popDistance = new Vector3(.3f, 0);
                 break;
 
             case "Small Ball":
@@ -189,7 +199,7 @@ public class SlimeScript : MonoBehaviour
                     this.GetComponent<SpriteRenderer>().color = slimeColor;
                     this.GetComponent<SpriteRenderer>().sprite = minion.demonSprite;
                 }
-                popDistance = new Vector3(.2f, 0);
+                //popDistance = new Vector3(.2f, 0);
                 break;
 
             case "Smallest Ball":
@@ -206,7 +216,7 @@ public class SlimeScript : MonoBehaviour
                     this.GetComponent<SpriteRenderer>().color = slimeColor;
                     this.GetComponent<SpriteRenderer>().sprite = minion.demonSprite;
                 }
-                popDistance = new Vector3(.1f, 0);
+                //popDistance = new Vector3(.1f, 0);
                 break;
         }
     }

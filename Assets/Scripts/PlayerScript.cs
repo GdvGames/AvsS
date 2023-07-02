@@ -84,7 +84,7 @@ public class PlayerScript : MonoBehaviour
         anim.Play("Shoot");
 
         Vector3 temp = transform.position;
-        temp.y += 1.5f;
+        temp.y += 1.0f;
 
         Instantiate(arrow, temp, Quaternion.identity);
 
